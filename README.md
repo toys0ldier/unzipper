@@ -8,7 +8,7 @@ Errors are printed to stdout when observed, otherwise, output is shown as a prog
 $ unzip_all <path to unzip>
 ```
 
-*Tip: stick this in your favorite PATH location to make it an environment variable accessible from anywhere!
+*Tip: stick this in your favorite PATH location to make it an environment variable accessible from anywhere!*
 
 ```
 $ sudo cp unzip_all usr/local/bin/unzip_all
