@@ -1,0 +1,38 @@
+#!/opt/homebrew/bin/python3
+
+import os, shutil, sys
+
+def progress(fileName, completeNum):
+    printWidth = (os.get_terminal_size().columns - 25)
+    if len(fileName) < printWidth:
+        for _ in range(0, (printWidth - len(fileName))):
+            fileName += ' '
+    elif len(fileName) > printWidth:
+        fileName = '...' + fileName[-(printWidth - 3):]
+    else:
+        pass
+    print("%s [ Progress: %s ] " % (fileName.encode('utf-8', 'ignore').decode('utf-8'), '{:,}'.format(completeNum)), end='\r')
+    
+def main():
+    error_count = 0
+    for i, entry in enumerate(os.scandir(sys.argv[1]), start=1):
+        if entry.name.lower().endswith('.zip'):
+            try:
+                outFile = os.path.join(sys.argv[1], entry.name.rstrip('.zip'))
+                if not os.path.exists(outFile):
+                    os.mkdir(outFile)
+                shutil.unpack_archive(entry.path, outFile)
+                os.remove(entry.path)
+                progress(entry.name, i)
+            except Exception:
+                error_count += 1
+                pass
+    print('')
+    if error_count:
+        print('Unzip operation completed with errors: %s archive(s) failed to unpack!' % '{:,}'.format(error_count))
+    else:
+        print('Unzip operation completed successfully!')
+            
+if __name__ == '__main__':
+    
+    main()
